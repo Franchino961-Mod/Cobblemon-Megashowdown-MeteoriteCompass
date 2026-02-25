@@ -50,3 +50,8 @@ minecraft/
 # Virtual machine crash logs
 hs_err_pid*
 replay_pid*
+
+### Private File ###
+IMPLEMENTATION_PLAN.md
+TESTING_STATUS.md
+*.pdn
