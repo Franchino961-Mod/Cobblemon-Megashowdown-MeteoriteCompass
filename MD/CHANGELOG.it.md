@@ -7,46 +7,77 @@ Tutti i cambiamenti notevoli alla mod **Meteorite Compass** saranno documentati 
 ## [Non Rilasciato]
 
 ### Funzionalità Pianificate (v1.1.0+)
-- Sistema di tracking strutture visitate
-- Codifica colore ago basata su distanza
-- Miglioramenti overlay HUD
-- Supporto lingue aggiuntive
-- Integrazione ricette JEI/REI
-- Miglioramenti sistema comandi
+- Sistema di configurazione JSON
+- Tracciamento strutture visitate
+- Animazione ago bussola con ItemPropertyFunction
+- Effetti particelle quando meteorite localizzato
+- Effetti sonori per feedback ricerca
+- Supporto lingue aggiuntive (ES, FR, DE, PT-BR)
+- Integrazione ricette JEI/REI/EMI
+- Sistema comandi per debug
 
 ---
 
-## [1.0.0] - TBD (Release Iniziale)
+## [1.0.1] - 27 Febbraio 2026 (Bugfix)
+
+### Corretto
+- Risolto bug per cui l'ago della bussola non si animava a causa del predicate mancante
+- Risolto un crash del client (`ClassCastException`) nell'invio dei pacchetti passando a `RegistryByteBuf`
+- Risolta la logica della GUI che cercava sempre "Megaroid" indipendentemente dal pulsante selezionato (Mega Site)
+- Risolti problemi di traduzione mancante e testo sfocato (blur) nel pannello della GUI
+
+---
+
+## [1.0.0] - 25 Febbraio 2026 (Release Iniziale)
 
 ### Aggiunto
 - **Funzionalità Core**
   - Item Bussola Meteorite che localizza meteoriti da CobblemonMegaShowdown
-  - Ricerca strutture per "Megaroid" (Y -32 a -20)
-  - Ricerca strutture per "Mega Site" (Y -19 a 5)
+  - Ricerca strutture per "mega_showdown:megaroid" (Y -32 a -20)
+  - Ricerca strutture per "mega_showdown:mega_site" (Y -19 a 5)
   - Attivazione click destro per cercare meteorite più vicino
-  - Ago bussola punta al meteorite localizzato
+  - Shift + click destro per resettare bussola
+  - Componenti dati per storage stato bussola (INACTIVE, SEARCHING, FOUND, NOT_FOUND)
+
+- **Sistema di Ricerca Avanzato**
+  - WorldWorkerManager per coordinamento worker asincroni
+  - SearchWorkerManager per gestione ricerche multiple
+  - RandomSpreadSearchWorker con algoritmo ricerca a spirale
+  - Ricerca non-blocking fino a 10.000 blocchi di raggio
+  - Campionamento fino a 100.000 punti
+  - Time-sliced execution (50ms per server tick)
 
 - **Esperienza Utente**
-  - Sistema di cooldown (30 secondi default, configurabile)
-  - Effetti particelle quando meteorite localizzato
-  - Effetti sonori per feedback ricerca
-  - Display HUD distanza (opzionale)
-  - Messaggi chat per stato ricerca
-  
-- **Sistema di Configurazione**
-  - File config `meteorite_compass.json`
-  - Raggio di ricerca configurabile (default: 5000 blocchi)
-  - Durata cooldown configurabile
-  - Toggle per display HUD
-  - Toggle per effetti particelle
-  - Toggle per effetti sonori
-  - Opzione per tracking strutture visitate
+  - Display HUD in tempo reale durante ricerca
+  - Mostra progresso (campioni, raggio) durante ricerca
+  - Mostra distanza quando meteorite trovato
+  - Feedback colore (bianco=ricerca, verde=trovato, rosso=non trovato)
+  - Client initializer per rendering HUD
 
 - **Ricetta di Crafting**
-  - Bussola craftata con Blocchi Meteoroide Mega e Mega Stone
-  - Usa materiali da CobblemonMegaShowdown
+  - Bussola craftabile con materiali vanilla:
+    * 4x Lingotti Ferro
+    * 2x Frammenti Ametista  
+    * 2x Polvere di Glowstone
+    * 1x Bussola
+  - Early-game friendly, non richiede materiali da meteoriti
+
+- **Networking**
+  - Pacchetto SearchPacket (Client → Server) per iniziare ricerca
+  - Pacchetto SyncPacket (Server → Client) per sync stato
+  - Fabric Networking API integration
+
+- **Architettura Tecnica**
+  - Piattaforma: Fabric 1.21.1
+  - Fabric Loader: 0.16.9+
+  - Fabric API: 0.108.0+1.21.1
+  - Yarn Mappings: 1.21.1+build.3
+  - Java: 21
+  - Gradle: 8.10.2
+  - Fabric Loom: 1.8-SNAPSHOT
 
 - **Localizzazione**
+  - Italiano (it_it)
   - Inglese (en_us)
   - Italiano (it_it)
   - Spagnolo (es_es)
