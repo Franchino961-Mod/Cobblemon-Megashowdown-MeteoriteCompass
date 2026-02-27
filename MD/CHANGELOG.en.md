@@ -7,46 +7,77 @@ All notable changes to the **Meteorite Compass** mod will be documented in this 
 ## [Unreleased]
 
 ### Planned Features (v1.1.0+)
-- Visited structure tracking system
-- Distance-based needle color coding
-- HUD overlay improvements
-- Additional languages support
-- JEI/REI recipe integration
-- Command system enhancements
+- JSON configuration system
+- Visited structure tracking
+- Compass needle animation with ItemPropertyFunction
+- Particle effects when meteorite located
+- Sound effects for search feedback
+- Additional language support (ES, FR, DE, PT-BR)
+- JEI/REI/EMI recipe integration
+- Debug command system
 
 ---
 
-## [1.0.0] - TBD (Initial Release)
+## [1.0.1] - February 27, 2026 (Bugfixes)
+
+### Fixed
+- Fixed compass needle not animating due to missing ModelPredicate registry
+- Fixed a client crash (`ClassCastException`) when sending network packets by switching to `RegistryByteBuf`
+- Fixed GUI selection where clicking "Mega Site" would incorrectly always search for "Megaroid"
+- Fixed GUI text missing translations and rendering blurry
+
+---
+
+## [1.0.0] - February 25, 2026 (Initial Release)
 
 ### Added
 - **Core Functionality**
   - Meteorite Compass item that locates meteorites from CobblemonMegaShowdown
-  - Structure finder for "Megaroid" (Y -32 to -20)
-  - Structure finder for "Mega Site" (Y -19 to 5)
+  - Structure finder for "mega_showdown:megaroid" (Y -32 to -20)
+  - Structure finder for "mega_showdown:mega_site" (Y -19 to 5)
   - Right-click activation to search for nearest meteorite
-  - Compass needle points to located meteorite
+  - Shift + right-click to reset compass
+  - Data components for compass state storage (INACTIVE, SEARCHING, FOUND, NOT_FOUND)
+
+- **Advanced Search System**
+  - WorldWorkerManager for async worker coordination
+  - SearchWorkerManager for managing multiple searches
+  - RandomSpreadSearchWorker with spiral search algorithm
+  - Non-blocking search up to 10,000 block radius
+  - Sampling up to 100,000 points
+  - Time-sliced execution (50ms per server tick)
 
 - **User Experience**
-  - Cooldown system (30 seconds default, configurable)
-  - Particle effects when meteorite located
-  - Sound effects for search feedback
-  - HUD distance display (optional)
-  - Chat messages for search status
-  
-- **Configuration System**
-  - `meteorite_compass.json` config file
-  - Configurable search radius (default: 5000 blocks)
-  - Configurable cooldown duration
-  - Toggle for HUD display
-  - Toggle for particle effects
-  - Toggle for sound effects
-  - Option to track visited structures
+  - Real-time HUD display during search
+  - Shows progress (samples, radius) while searching
+  - Shows distance when meteorite found
+  - Color-coded feedback (white=searching, green=found, red=not found)
+  - Client initializer for HUD rendering
 
 - **Crafting Recipe**
-  - Compass crafted with Mega Meteoroid Blocks and Mega Stone
-  - Uses materials from CobblemonMegaShowdown
+  - Compass craftable with vanilla materials:
+    * 4x Iron Ingots
+    * 2x Amethyst Shards
+    * 2x Glowstone Dust
+    * 1x Compass
+  - Early-game friendly, no meteorite materials required
+
+- **Networking**
+  - SearchPacket (Client → Server) to initiate search
+  - SyncPacket (Server → Client) for state sync
+  - Fabric Networking API integration
+
+- **Technical Architecture**
+  - Platform: Fabric 1.21.1
+  - Fabric Loader: 0.16.9+
+  - Fabric API: 0.108.0+1.21.1
+  - Yarn Mappings: 1.21.1+build.3
+  - Java: 21
+  - Gradle: 8.10.2
+  - Fabric Loom: 1.8-SNAPSHOT
 
 - **Localization**
+  - Italian (it_it)
   - English (en_us)
   - Italian (it_it)
   - Spanish (es_es)
