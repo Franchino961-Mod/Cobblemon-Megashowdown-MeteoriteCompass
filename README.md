@@ -2,9 +2,10 @@
 **Locate MegaShowdown Meteorites with Ease!**
 
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-green.svg)](https://www.minecraft.net/)
-[![Fabric](https://img.shields.io/badge/Fabric-0.16.9-blue.svg)](https://fabricmc.net/)
-[![NeoForge](https://img.shields.io/badge/NeoForge-21.1.x-orange.svg)](https://neoforged.net/)
+[![Fabric](https://img.shields.io/badge/Fabric-1.21.1-blue.svg)](https://fabricmc.net/)
+[![Fabric API](https://img.shields.io/badge/Fabric%20API-0.108.0-blue.svg)](https://modrinth.com/mod/fabric-api)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](build/libs/)
 
 ---
 
@@ -18,11 +19,10 @@ Tired of digging randomly hoping to find meteorites? This mod adds a craftable c
 
 - 🧭 **Smart Navigation**: Points to nearest Megaroid or Mega Site meteorite
 - 🎯 **Two Structure Types**: Finds both deep underground and shallow meteorites
-- ⚙️ **Fully Configurable**: Adjust search radius, cooldown, and more
-- 🎨 **Visual Feedback**: Particles and sounds when meteorites are located
-- 📊 **HUD Display**: Shows distance and direction (optional)
-- 🌐 **Multi-Language**: Supports EN, IT, ES, FR, DE, PT-BR
-- 🔧 **Cross-Loader**: Works on both Fabric and NeoForge
+- 🔍 **Async Search**: Efficient spiral search algorithm that doesn't lag the server
+- 📊 **HUD Display**: Real-time search progress and distance display
+- 🌐 **Multi-Language**: Supports EN and IT
+- ⚡ **Optimized**: Worker system ensures smooth server performance
 
 ---
 
@@ -31,24 +31,29 @@ Tired of digging randomly hoping to find meteorites? This mod adds a craftable c
 ### Crafting the Compass
 
 ```
-[ Mega Meteoroid Block ]
-[    Compass    ] [ Mega Stone ]
-[ Mega Meteoroid Block ]
+[Iron Ingot] [Amethyst Shard] [Iron Ingot]
+[Glowstone]  [   Compass   ] [Glowstone]
+[Iron Ingot] [Amethyst Shard] [Iron Ingot]
 ```
 
-*Requires materials from CobblemonMegaShowdown meteorites*
+*Uses common materials for early-game accessibility*
 
 ### Using the Compass
 
-1. **Craft** the Meteorite Compass using meteorite materials
+1. **Craft** the Meteorite Compass using the recipe above
 2. **Right-Click** with the compass in hand to search for meteorites
-3. **Wait** for the search to complete (~1-2 seconds)
-4. **Follow** the compass needle to the meteorite location
-5. **Find** the meteorite and collect valuable resources!
+3. **Wait** for the asynchronous search to complete
+4. **Watch the HUD** for real-time search progress and results
+5. **Follow** the compass when a meteorite is found
+6. **Shift + Right-Click** to reset the compass
 
-### Cooldown System
+### Search System
 
-After each search, the compass has a **30-second cooldown** (configurable) to prevent server performance issues.
+The compass uses an **intelligent spiral search algorithm** that:
+- Samples potential meteorite locations in expanding squares
+- Checks up to 100,000 sample points or 10,000 block radius
+- Runs asynchronously using a worker system (no server lag)
+- Updates your HUD with real-time progress
 
 ---
 
@@ -70,31 +75,30 @@ The compass can locate two types of meteorites from CobblemonMegaShowdown:
 
 ---
 
+## 📦 Installation
+
+### Requirements
+- **Minecraft**: 1.21.1
+- **Fabric Loader**: 0.16.9 or higher
+- **Fabric API**: 0.108.0 or higher
+- **CobblemonMegaShowdown**: Latest version (for meteorite structures)
+- **Java**: 21 or higher
+
+### Steps
+1. Download and install [Fabric Loader](https://fabricmc.net/use/)
+2. Download [Fabric API](https://modrinth.com/mod/fabric-api)
+3. Download [CobblemonMegaShowdown](https://www.curseforge.com/minecraft/mc-mods/cobblemon-megashowdown)
+4. Place `meteorite-compass-1.0.0.jar` in your `mods` folder
+5. Launch Minecraft and enjoy!
+
 ## ⚙️ Configuration
 
-Edit `config/meteorite_compass.json` to customize behavior:
+*Configuration system coming in v1.1.0*
 
-```json
-{
-  "search_radius": 5000,
-  "cooldown_seconds": 30,
-  "show_distance_hud": true,
-  "particle_effects": true,
-  "sound_effects": true,
-  "track_visited_structures": false
-}
-```
-
-### Configuration Options
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `search_radius` | 5000 | Maximum search distance in blocks |
-| `cooldown_seconds` | 30 | Seconds between compass uses |
-| `show_distance_hud` | true | Display distance overlay when holding compass |
-| `particle_effects` | true | Show particles when meteorite found |
-| `sound_effects` | true | Play sounds on search success |
-| `track_visited_structures` | false | Skip already-visited meteorites |
+Current hardcoded values:
+- **Max Search Radius**: 10,000 blocks
+- **Max Samples**: 100,000 points
+- **Search Pattern**: Spiral (expanding square)
 
 ---
 
@@ -312,5 +316,3 @@ If you enjoy this mod:
 ---
 
 **Made with ❤️ for the Cobblemon & MegaShowdown community!**
-
-*Last Updated: February 25, 2026*

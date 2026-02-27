@@ -2,9 +2,10 @@
 **Localizza i Meteoriti di MegaShowdown con Facilità!**
 
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-green.svg)](https://www.minecraft.net/)
-[![Fabric](https://img.shields.io/badge/Fabric-0.16.9-blue.svg)](https://fabricmc.net/)
-[![NeoForge](https://img.shields.io/badge/NeoForge-21.1.x-orange.svg)](https://neoforged.net/)
+[![Fabric](https://img.shields.io/badge/Fabric-1.21.1-blue.svg)](https://fabricmc.net/)
+[![Fabric API](https://img.shields.io/badge/Fabric%20API-0.108.0-blue.svg)](https://modrinth.com/mod/fabric-api)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](build/libs/)
 
 ---
 
@@ -18,11 +19,10 @@ Stanco di scavare a caso sperando di trovare meteoriti? Questa mod aggiunge una 
 
 - 🧭 **Navigazione Intelligente**: Punta al Megaroid o Mega Site più vicino
 - 🎯 **Due Tipi di Strutture**: Trova meteoriti sia profondi che superficiali
-- ⚙️ **Completamente Configurabile**: Regola raggio di ricerca, cooldown e altro
-- 🎨 **Feedback Visivi**: Particelle e suoni quando i meteoriti vengono localizzati
-- 📊 **Display HUD**: Mostra distanza e direzione (opzionale)
-- 🌐 **Multi-Lingua**: Supporta IT, EN, ES, FR, DE, PT-BR
-- 🔧 **Cross-Loader**: Funziona sia su Fabric che NeoForge
+- 🔍 **Ricerca Asincrona**: Algoritmo di ricerca a spirale efficiente che non causa lag al server
+- 📊 **Display HUD**: Visualizzazione in tempo reale del progresso della ricerca e della distanza
+- 🌐 **Multi-Lingua**: Supporta IT e EN
+- ⚡ **Ottimizzato**: Sistema worker che garantisce prestazioni fluide del server
 
 ---
 
@@ -31,24 +31,29 @@ Stanco di scavare a caso sperando di trovare meteoriti? Questa mod aggiunge una 
 ### Craftare la Bussola
 
 ```
-[ Blocco Meteoroide Mega ]
-[      Bussola      ] [ Mega Stone ]
-[ Blocco Meteoroide Mega ]
+[Lingotto Ferro] [Frammento Ametista] [Lingotto Ferro]
+[Glowstone]      [     Bussola      ] [Glowstone]
+[Lingotto Ferro] [Frammento Ametista] [Lingotto Ferro]
 ```
 
-*Richiede materiali dai meteoriti di CobblemonMegaShowdown*
+*Usa materiali comuni per accessibilità early-game*
 
 ### Usare la Bussola
 
-1. **Crafta** la Bussola Meteorite usando materiali dei meteoriti
+1. **Crafta** la Bussola Meteorite usando la ricetta sopra
 2. **Click Destro** con la bussola in mano per cercare meteoriti
-3. **Aspetta** che la ricerca si completi (~1-2 secondi)
-4. **Segui** l'ago della bussola verso la posizione del meteorite
-5. **Trova** il meteorite e raccogli risorse preziose!
+3. **Aspetta** che la ricerca asincrona si completi
+4. **Guarda l'HUD** per il progresso della ricerca in tempo reale e i risultati
+5. **Segui** la bussola quando un meteorite viene trovato
+6. **Shift + Click Destro** per resettare la bussola
 
-### Sistema di Cooldown
+### Sistema di Ricerca
 
-Dopo ogni ricerca, la bussola ha un **cooldown di 30 secondi** (configurabile) per prevenire problemi di performance del server.
+La bussola usa un **algoritmo di ricerca a spirale intelligente** che:
+- Campiona posizioni potenziali di meteoriti in quadrati espandenti
+- Controlla fino a 100.000 punti campione o 10.000 blocchi di raggio
+- Funziona in modo asincrono usando un sistema worker (nessun lag del server)
+- Aggiorna il tuo HUD con il progresso in tempo reale
 
 ---
 
@@ -70,31 +75,30 @@ La bussola può localizzare due tipi di meteoriti da CobblemonMegaShowdown:
 
 ---
 
+## 📦 Installazione
+
+### Requisiti
+- **Minecraft**: 1.21.1
+- **Fabric Loader**: 0.16.9 o superiore
+- **Fabric API**: 0.108.0 o superiore
+- **CobblemonMegaShowdown**: Ultima versione (per le strutture meteoriti)
+- **Java**: 21 o superiore
+
+### Passaggi
+1. Scarica e installa [Fabric Loader](https://fabricmc.net/use/)
+2. Scarica [Fabric API](https://modrinth.com/mod/fabric-api)
+3. Scarica [CobblemonMegaShowdown](https://www.curseforge.com/minecraft/mc-mods/cobblemon-megashowdown)
+4. Posiziona `meteorite-compass-1.0.0.jar` nella tua cartella `mods`
+5. Avvia Minecraft e divertiti!
+
 ## ⚙️ Configurazione
 
-Modifica `config/meteorite_compass.json` per personalizzare il comportamento:
+*Sistema di configurazione in arrivo nella v1.1.0*
 
-```json
-{
-  "search_radius": 5000,
-  "cooldown_seconds": 30,
-  "show_distance_hud": true,
-  "particle_effects": true,
-  "sound_effects": true,
-  "track_visited_structures": false
-}
-```
-
-### Opzioni di Configurazione
-
-| Opzione | Default | Descrizione |
-|---------|---------|-------------|
-| `search_radius` | 5000 | Distanza massima di ricerca in blocchi |
-| `cooldown_seconds` | 30 | Secondi tra un uso e l'altro della bussola |
-| `show_distance_hud` | true | Mostra overlay distanza quando tieni la bussola |
-| `particle_effects` | true | Mostra particelle quando meteorite trovato |
-| `sound_effects` | true | Riproduce suoni al successo della ricerca |
-| `track_visited_structures` | false | Salta meteoriti già visitati |
+Valori attualmente hardcoded:
+- **Raggio Massimo Ricerca**: 10.000 blocchi
+- **Campioni Massimi**: 100.000 punti
+- **Pattern di Ricerca**: Spirale (quadrato espandente)
 
 ---
 
@@ -312,5 +316,3 @@ Se ti piace questa mod:
 ---
 
 **Fatto con ❤️ per la community di Cobblemon & MegaShowdown!**
-
-*Ultimo Aggiornamento: 25 Febbraio 2026*
